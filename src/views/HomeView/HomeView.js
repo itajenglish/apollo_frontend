@@ -1,21 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Link } from 'react-router'
-
-type Props = {
-
-};
-
-require('./HomeView.scss')
 
 export class HomeView extends React.Component {
-  props: Props;
-
-  static contextTypes = {
-    router: React.PropTypes.object.isRequired
-  };
-
   constructor(props) {
     super(props)
   }
@@ -29,11 +16,9 @@ export class HomeView extends React.Component {
   }
 }
 
-const mapStateToProps = (state, { params }) => {
-  return {
+const mapStateToProps = (state, { params }) => ({
 
-  }
-}
+})
 
 const mapDispatchToProps = (dispatch) => {
   const actions = {
