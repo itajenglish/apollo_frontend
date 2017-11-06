@@ -1,13 +1,15 @@
 import React, { Component, PropTypes } from 'react'
 import { Router } from 'react-router'
-import ApolloClient, {
-  createNetworkInterface,
-  addTypename
-} from 'graphql-tag'
+
+// apollo imports
+import ApolloClient, { addTypename } from 'apollo-client'
+import { HttpLink } from 'apollo-link-http'
+import { InMemoryCache } from 'apollo-cache-inmemory'
 import { ApolloProvider } from 'react-apollo'
 
 const client = new ApolloClient({
-  networkInterface: createNetworkInterface('http://localhost:8080/graphql'),
+  link: new HttpLink({ uri: 'http://localhost:8080/graphql' }),
+  cache: new InMemoryCache().restore(window.__APOLLO_STATE__),
   queryTransformer: addTypename
 })
 
