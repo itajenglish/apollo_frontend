@@ -1,23 +1,38 @@
 import React from 'react'
 import { graphql } from 'react-apollo'
-import gql from 'graphql-tag' // NOTE: lets us define GraphQL queries in a template language
+import gql from 'graphql-tag'
 
-export class HomeView extends React.Component {
-  constructor(props) {
+class HomeView extends React.Component {
+  constructor (props) {
     super(props)
   }
 
   render () {
-    const author = this.props.data.author
-    if (!author) {
+    const authors = this.props.data.authors
+    if (!authors) {
       return <h1>Loading</h1>
     }
+
     return (
       <div>
-        <h1>{author.firstName}'s posts</h1>
-        {author.posts && author.posts.map((post, idx) => (
-          <li key={idx}>{post.title}</li>
+        {authors.map((author, idx) => (
+          <div key={'author-' + idx}>
+            <h1>{author.firstName}'s posts</h1>
+            {author.posts && author.posts.map((post, idx) => (
+              <li key={idx}>{post.title}</li>
+            ))}
+          </div>
         ))}
+        <br />
+        <div>
+          <label>Add a post</label>
+          <br />
+          <input placeholder="Name" />
+          <br />
+          <input placeholder="Message" />
+          <br />
+          <button>Add Post!</button>
+        </div>
       </div>
     )
   }
@@ -25,7 +40,7 @@ export class HomeView extends React.Component {
 
 const query = gql`
 query {
-  author(firstName:"Edmond", lastName: "Jones"){
+  authors {
     firstName
     posts {
       title
