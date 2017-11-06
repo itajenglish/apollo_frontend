@@ -1,24 +1,31 @@
-import React, { PropTypes } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { Router } from 'react-router'
-import { Provider } from 'react-redux'
+import ApolloClient, {
+  createNetworkInterface,
+  addTypename
+} from 'graphql-tag'
+import { ApolloProvider } from 'react-apollo'
 
-class AppContainer extends React.Component {
+const client = new ApolloClient({
+  networkInterface: createNetworkInterface('http://localhost:8080/graphql'),
+  queryTransformer: addTypename
+})
+
+class AppContainer extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
     routes: PropTypes.object.isRequired,
-    routerKey: PropTypes.number,
     store: PropTypes.object.isRequired
-  }
+  };
 
   render () {
-    const { history, routes, routerKey, store } = this.props
-
+    const { history, routes } = this.props
     return (
-      <Provider store={store}>
-        <div style={{ height: '100%' }}>
-          <Router history={history} children={routes} key={routerKey} />
+      <ApolloProvider client={client}>
+        <div>
+          <Router history={history} children={routes} />
         </div>
-      </Provider>
+      </ApolloProvider>
     )
   }
 }
